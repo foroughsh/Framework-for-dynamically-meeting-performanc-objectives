@@ -1,0 +1,11 @@
+To install and configure Istio, we use the following link:
+https://istio.io/v1.14/docs/setup/getting-started/#download
+and,
+https://istio.io/v1.14/docs/setup/install/istioctl/
+
+curl -L https://istio.io/downloadIstio | sh -
+cd istio-1.14.3
+export PATH=$PWD/bin:$PATH
+
+Installing from default profile:
+istioctl manifest apply
