@@ -1,0 +1,55 @@
+To install Kubernetes use the instruction from following link:
+https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+
+Installing Kubeadm:
+https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+commands:
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl
+sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" |
+sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+
+
+
+Creating cluster with kubeadm:
+https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
+commands:
+kubeadm init
+Output:
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join MasterNode-IP-address:6443 --token c4d0xh.l9jgxhixjn3fv8ih \
+	--discovery-token-ca-cert-hash sha256:d8662eb59e4ca10eacc2ac8707d9eb55d2c614282631b572363055b74fee9a2b
+
+On mater node: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+
+Adding worker nodes:
+sudo swapoff -a
+sudo kubeadm join MasterNode-IP-address:6443 --token c4d0xh.l9jgxhixjn3fv8ih \
+	--discovery-token-ca-cert-hash sha256:d8662eb59e4ca10eacc2ac8707d9eb55d2c614282631b572363055b74fee9a2b
+
+If you are adding a new node after many months you need to check if the token is still valid or not by following command:
+kubeadm tokens list
+
+If not then, you need to generate new token with following command:
+kubeadm token create --print-join-command
