@@ -1,4 +1,4 @@
-To install Kubernetes use the instruction from following link:
+To install Kubernetes, we use the instruction from following link:
 https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 
 Installing Kubeadm:
